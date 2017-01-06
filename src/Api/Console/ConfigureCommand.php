@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sunzhiping
- * Date: 17/1/3
- * Time: 下午3:40
- */
-
 namespace Integration\Api\Console;
 
 use Illuminate\Console\Command;

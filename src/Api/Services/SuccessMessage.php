@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sunzhiping
- * Date: 17/1/5
- * Time: 上午11:14
- */
 
 namespace Integration\Api\Services;
 

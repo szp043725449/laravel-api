@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sunzhiping
- * Date: 17/1/4
- * Time: 上午11:06
- */
 
 namespace Integration\Api\Middleware;
 

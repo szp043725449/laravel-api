@@ -1,14 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sunzhiping
- * Date: 17/1/4
- * Time: 下午2:37
- */
 
 namespace Integration\Api\Configure;
-
-
 
 class Disposed
 {
