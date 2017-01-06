@@ -2,10 +2,10 @@
     "name": "laravelextends/requestapi",
     "description": "laravel requestapi",
     "license": "MIT",
-    "homepage": "http://laravelcollective.com",
+    "homepage": "https://github.com/szp043725449",
     "support": {
-        "issues": "https://github.com/szp043725449/laravel-api/issues",
-        "source": "https://github.com/szp043725449/laravel-api"
+        "issues": "https://github.com/szp043725449/laravelextends-requestapi/issues",
+        "source": "https://github.com/szp043725449/laravelextends-requestapi"
     },
     "authors": [
         {
