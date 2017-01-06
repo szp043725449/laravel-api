@@ -7,7 +7,7 @@
 Require this package  
 
 ```php
-composer require laravelextends/requestapi
+php composer.phpar require "laravelextends/requestapi:dev-master"
 ```
 
 After adding the package, add the ServiceProvider to the providers array in `config/app.php`
