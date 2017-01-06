@@ -21,5 +21,6 @@
         "psr-4": {
             "Integration\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev-develop"
 }
