@@ -24,6 +24,10 @@ php artisan vendor:publish --tag="config"
 ```
 
 ```php
+php artisan integration:annotaion:create
+```
+
+```php
     /**
      * @Integration(configure="user.login", power="sdfd", cache={"caching_time":0.5, "cache_name"="ssdf"})
      */
