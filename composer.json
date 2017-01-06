@@ -22,5 +22,5 @@
             "Integration\\": "src/"
         }
     },
-    "minimum-stability": "dev-develop"
+    "minimum-stability": "dev"
 }
