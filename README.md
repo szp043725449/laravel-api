@@ -13,7 +13,7 @@ composer require laravelextends/requestapi
 After adding the package, add the ServiceProvider to the providers array in `config/app.php`
 
 ```php
-App\Providers\AnnotationsServiceProvider::class,
+Integration\Api\IntegrationServiceProvider::class,
 ```
 
 
