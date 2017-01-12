@@ -8,7 +8,7 @@ return[
     |
     | 配置接口请求和返回参数的文件存储目录
     */
-    'configure_path' => ''//app_path('configure'),
+    'configure_path' => '',//app_path('configure'),
 
     /*
     |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ return[
     |
     | 配置签名操作类
     */
-    'signOperationClass' => ''//App\Services\SignOperation::class,
+    'signOperationClass' => '',//App\Services\SignOperation::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return[
     |
     | 配置签名信息类
     */
-    'signMessageClass' => ''//App\Services\SignMessage::class,
+    'signMessageClass' => '',//App\Services\SignMessage::class,
 
     /*
     |--------------------------------------------------------------------------
