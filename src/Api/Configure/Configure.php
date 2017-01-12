@@ -4,6 +4,7 @@ namespace Integration\Api\Configure;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Integration\Api\Exceptions\NotFoundConfigurePathException;
 use Integration\Api\Exceptions\ValidateFunctionReturnParameterException;
 use Integration\Api\Services\ErrorMessage;
@@ -28,6 +29,8 @@ class Configure
     private $disposed;
 
     private $fistName;
+
+    private $closure;
 
     public function __construct($path)
     {
@@ -190,6 +193,47 @@ class Configure
     }
 
     /**
+     * @param $closure
+     * @param array $args
+     * @param bool $share
+     * @return mixed
+     */
+    public function callFunction($closure, $args = [], $share = false)
+    {
+        $name = "";
+        if (is_array($closure)) {
+            if (isset($closure[0]) && isset($closure[1])) {
+                if (method_exists($closure[0], $closure[1])) {
+                    $class = $closure[0];
+                    $method = $closure[1];
+                    $return = null;
+                    $reflectionClass = new ReflectionClass($class);
+                    $reflectionFcuntion = $reflectionClass->getMethod($method);
+                    $name = md5($reflectionClass->getName().$reflectionFcuntion->getName().json_encode($args));
+
+                    if (isset($this->closure['class_function']) && $share) {
+                        $classFunction = $this->closure['class_function'];
+                        return $classFunction[$name];
+                     }
+
+                    foreach ($reflectionFcuntion->getParameters() as $reflectionParameter) {
+                        $app = \App::getInstance();
+                        if (isset($app[$reflectionParameter->getName()])) {
+                            $args[$reflectionParameter->getName()] = $app[$reflectionParameter->getName()];
+                        }
+                    }
+                    $contetns = $reflectionFcuntion->invokeArgs($class, $args);
+
+                    $return[$name] = $contetns;
+
+                    $this->closure['class_function'] = isset($this->closure['class_function']) ? array_merge($this->closure['class_function'], $return) : $return;
+                    return $contetns;
+                }
+            }
+        }
+    }
+
+    /**
      * @return ParameterBag
      */
     public function shareParameterBag()
@@ -211,6 +255,10 @@ class Configure
 
     }
 
+    /**
+     * @param Message $message
+     * @return Response
+     */
     public function getSendResponseWithMessage(Message $message)
     {
         if ($message instanceof Message) {
@@ -220,6 +268,14 @@ class Configure
 
             }
         }
+    }
+
+    /**
+     * @return \Integration\Api\Services\SignMessage|mixed
+     */
+    public function getSignMessage()
+    {
+        return \App::make('integration.signmessage');
     }
 
     /**
