@@ -50,7 +50,7 @@ class IntegrationServiceProvider extends ServiceProvider
     private function checkConfigurePath()
     {
         $path = Config::get('integration.configure_path');
-        if ($path === false) {
+        if ($path === false || !$path) {
             return;
         }
         if ($path && is_dir($path) && file_exists($path)) {
