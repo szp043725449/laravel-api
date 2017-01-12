@@ -8,7 +8,7 @@ return[
     |
     | 配置接口请求和返回参数的文件存储目录
     */
-    'configure_path' => '',//app_path('configure'),
+    'configure_path' => false,//app_path('configure'),
 
     /*
     |--------------------------------------------------------------------------
