@@ -8,5 +8,5 @@ interface Authentication
     /**
      * @return Message
      */
-    public function auth();
+    public function auth($power);
 }
