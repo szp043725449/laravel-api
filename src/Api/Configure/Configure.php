@@ -116,7 +116,7 @@ class Configure
                 if (isset($value['validate']['rules']) && is_string($value['validate']['rules']) && $value['validate']['rules']) {
                     $message = isset($value['validate']['message']) && is_array($value['validate']['message']) && $value['validate']['message'] ? $value['validate']['message'] : [];
                     $validator = Validator::make($data, [$key => $value['validate']['rules']], $message);
-                    if ($validator->failed()) {
+                    if ($validator->fails()) {
                         $errorMessages = $validator->errors()->getMessages();
                         $code = isset($errorMessages[$key][0]['code']) ? $errorMessages[$key][0]['code'] : '';
                         $message = isset($errorMessages[$key][0]['message']) ? $errorMessages[$key][0]['message'] : '';
@@ -166,6 +166,8 @@ class Configure
                         if ($function instanceof Closure) {
                             $result = $this->makeWithClosure($function);
                             $paramterBag->set($paramter['attached_value']['realParamterName'] ? $paramter['attached_value']['realParamterName'] : $key, $result);
+                        } else {
+                            $paramterBag->set($paramter['attached_value']['realParamterName'] ? $paramter['attached_value']['realParamterName'] : $key, \App::make('request')->get($key));
                         }
                     }
                 }
