@@ -115,11 +115,16 @@ class Configure
             if (isset($value['validate'])) {
                 if (isset($value['validate']['rules']) && is_string($value['validate']['rules']) && $value['validate']['rules']) {
                     $message = isset($value['validate']['message']) && is_array($value['validate']['message']) && $value['validate']['message'] ? $value['validate']['message'] : [];
-                    $validator = Validator::make($data, [$key => $value['validate']['rules']], $message);
+                    $_message = [];
+                    foreach ($message as $mk=>$mv) {
+                        $_message[$mk] = json_encode($mv);
+                    }
+                    $validator = Validator::make($data, [$key => $value['validate']['rules']], $_message);
                     if ($validator->fails()) {
                         $errorMessages = $validator->errors()->getMessages();
-                        $code = isset($errorMessages[$key][0]['code']) ? $errorMessages[$key][0]['code'] : '';
-                        $message = isset($errorMessages[$key][0]['message']) ? $errorMessages[$key][0]['message'] : '';
+                        $errorMessagesArray = json_decode($errorMessages[$key][0], true);
+                        $code = isset($errorMessagesArray['code']) ? $errorMessagesArray['code'] : '';
+                        $message = isset($errorMessagesArray['message']) ? $errorMessagesArray['message'] : '';
 
                         return $this->message = new ErrorMessage($code, $message);
 
