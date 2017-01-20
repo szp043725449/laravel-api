@@ -114,13 +114,13 @@ class Integration
         $first = substr($name, 0, 1);
         if (":" == $first) {
             return eval('return '.substr($name, 1));
-        } elseif ("!" == "$first") {
+        } elseif ("!" == $first) {
             $closure = substr($name, 1);
             eval(' $closure = '.substr($name, 1).";");
-            $reflectionFunction = new \ReflectionFunction($closure);
+            //$reflectionFunction = new \ReflectionFunction($closure);
             $name = $this->iconfigure->makeWithClosure($closure);
             return $name;
-        } elseif ("defalut" == $name) {
+        } elseif ("default" == $name) {
             return md5($request->getRequestUri().json_encode($request->all()));
         }
 
