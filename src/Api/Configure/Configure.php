@@ -2,9 +2,7 @@
 
 namespace Integration\Api\Configure;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
 use Integration\Api\Exceptions\NotFoundConfigurePathException;
 use Integration\Api\Exceptions\ValidateFunctionReturnParameterException;
 use Integration\Api\Services\ErrorMessage;
@@ -268,13 +266,14 @@ class Configure
      */
     public function getSendResponseWithMessage(Message $message)
     {
-        if ($message instanceof Message) {
-            if ($this->getFirstDisposed()->getResponseType() == Disposed::RETURN_TYPE_TO_JSON) {
-                return new JsonResponse($message->getContents(), Response::HTTP_OK);
-            } elseif ($this->getFirstDisposed()->getMethod() == Disposed::RETURN_TYPE_TO_HTML) {
+        $error = \Config::get('integration.errorClass');
+        if (class_exists($error)) {
+            $error = \App::make($error);
 
-            }
+            return $error->send($message, $this);
         }
+
+        return new Response($message->getContents());
     }
 
     /**

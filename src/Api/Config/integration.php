@@ -35,5 +35,15 @@ return[
     |
     | 配置权限认证类
     */
-    'authClass' => App\Services\Authentication::class,
+    'authClass' => '',//App\Services\Authentication::class,
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | errorClass
+    |--------------------------------------------------------------------------
+    |
+    | 配置错误处理类
+    */
+    'errorClass' => '',//App\Services\ErrorResponse::class,
 ];
