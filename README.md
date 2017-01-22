@@ -249,6 +249,26 @@ class Authentication implements \Integration\Api\Services\Authentication
      */
 ```
 
+```php
+    /**
+     * @Get("/abc", as="abcd")
+     * @Integration(configure="user.login", power="admin", cache={"caching_time":0.1, "cache_name"="@getDefaultCacheName"})
+     */
+```
+
+```php
+    /**
+     * @Get("/abc", as="abcd")
+     * @Integration(configure="user.login", power="admin", cache={"caching_time":0.1, "cache_name"="@getDefaultCacheName"})
+     */
+    public function index(Configure $iconfigure)
+    {
+        $paramter = $iconfigure->attachedValue();
+        dump($iconfigure->getFirstDisposed());
+        return new Response("sdfdssdfsdff");
+    }
+```
+
 生成配置
 ```php
 php artisan integration:annotaion:create
