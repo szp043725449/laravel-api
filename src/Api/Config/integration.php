@@ -46,4 +46,13 @@ return[
     | 配置错误处理类
     */
     'errorClass' => '',//App\Services\ErrorResponse::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | cacheNameClass
+    |--------------------------------------------------------------------------
+    |
+    | 配置缓存名字类
+    */
+    'cacheNameClass' => '',//App\Services\ApiCacheName::class,
 ];

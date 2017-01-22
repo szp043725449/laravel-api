@@ -117,11 +117,24 @@ class Integration
         } elseif ("!" == $first) {
             $closure = substr($name, 1);
             eval(' $closure = '.substr($name, 1).";");
-            //$reflectionFunction = new \ReflectionFunction($closure);
             $name = $this->iconfigure->makeWithClosure($closure);
             return $name;
         } elseif ("default" == $name) {
             return md5($request->getRequestUri().json_encode($request->all()));
+        } elseif ("@" == $first) {
+            $cacheNameClass = \Config::get('integration.cacheNameClass');
+            if (class_exists($cacheNameClass)) {
+                $staticMethod = substr($name, 1);
+                $staticMethod = rtrim($staticMethod, ';');
+                $result =  $cacheNameClass::$staticMethod();
+                if ($result instanceof Closure) {
+                    return $this->iconfigure->makeWithClosure($result);
+                } elseif (is_string($result)) {
+                    return $result;
+                }
+            }
+
+            throw new \RuntimeException("@cache error");
         }
 
         return $name;
