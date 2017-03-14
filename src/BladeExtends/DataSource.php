@@ -56,6 +56,7 @@ abstract class DataSource
         $string = "{".$string."}";
         $args = json_decode($string , true);
         $class = $args['class'];
+        $class = '\\'.str_replace('.', '\\', $class);
         /** @var DataSource $dataSource */
         $dataSource = \App::make($class);
         $dataSource->key = array_get($args, 'key', $dataSource->key);
