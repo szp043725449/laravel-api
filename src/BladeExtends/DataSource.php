@@ -25,7 +25,7 @@ abstract class DataSource
     /**
      * @return array
      */
-    public function getArgs(): array
+    public function getArgs()
     {
         return $this->args;
     }
@@ -33,7 +33,7 @@ abstract class DataSource
     /**
      * @return string
      */
-    public function getKey(): string
+    public function getKey()
     {
         return $this->key;
     }
@@ -41,7 +41,7 @@ abstract class DataSource
     /**
      * @return string
      */
-    public function getValue(): string
+    public function getValue()
     {
         return $this->value;
     }
