@@ -55,7 +55,14 @@ endif;
 ?>$2
 EOT
         ],
+        'define'  => [
+            'pattern'     => '/(?<!\\w)(\\s*)@define(.+)(\\s*)/',
+            'replacement' => <<<'EOT'
+$1<?php ${2}; ?>$3
+EOT
+        ],
     ],
+
     /*
     |--------------------------------------------------------------------------
     | directiveExtendsClass
@@ -66,5 +73,6 @@ EOT
     'directiveExtendsClass' => [
         \Integration\BladeExtends\Directives\ForeachDirective::class,
         \Integration\BladeExtends\Directives\DataSourceDirective::class,
+        \Integration\BladeExtends\Directives\DefineDirective::class,
     ]
 ];
