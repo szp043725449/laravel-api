@@ -81,7 +81,7 @@ class InterfaceCodeGenerator
     /**
      * @param boolean $isDeleteParam
      */
-    public function setIsDeleteParam(bool $isDeleteParam)
+    public function setIsDeleteParam($isDeleteParam)
     {
         $this->isDeleteParam = $isDeleteParam;
     }
