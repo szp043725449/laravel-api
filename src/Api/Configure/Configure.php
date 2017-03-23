@@ -3,6 +3,7 @@
 namespace Integration\Api\Configure;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Integration\Api\Exceptions\NotFoundConfigurePathException;
 use Integration\Api\Exceptions\ValidateFunctionReturnParameterException;
 use Integration\Api\Services\ErrorMessage;
@@ -320,7 +321,7 @@ class Configure
      * @param $name
      * @return string
      */
-    private function getDisposedFilepath($name)
+    public function getDisposedFilepath($name)
     {
         $nameArray = explode('.', $name);
         $fileName = $nameArray[count($nameArray)-1];
