@@ -38,6 +38,9 @@ class Integration
     {
         $cacheName = "";
         $cacheTime = "";
+        if (!\Config::get('integration.start_cache')) {
+            $cache = "";
+        }
         if ($cache) {
             $cache = \Crypt::decrypt($cache);
             $cache = json_decode($cache, true);
@@ -57,7 +60,7 @@ class Integration
         /**
          * 权限验证
          */
-        if (!\Config::get('app.debug')) {
+        if (\Config::get('integration.start_auth')) {
             $authResult = $this->app->make('integration.auth')->auth($power);
             if (!($authResult instanceof Message) ) {
                 throw new TypeErrorException(gettype($authResult).' is not '.Authentication::class);
@@ -70,7 +73,7 @@ class Integration
         /**
          * 签名验证
          */
-        if (!\Config::get('app.debug') && $sign == "true") {
+        if (!\Config::get('app.debug') && $sign == "true" && \Config::get('integration.start_sign')) {
             $signatureOperation = $this->app->make('integration.signatureOperation');
 
             $signMessage = $this->app->make('integration.signmessage');
@@ -114,14 +117,27 @@ class Integration
         $first = substr($name, 0, 1);
         if (":" == $first) {
             return eval('return '.substr($name, 1));
-        } elseif ("!" == "$first") {
+        } elseif ("!" == $first) {
             $closure = substr($name, 1);
             eval(' $closure = '.substr($name, 1).";");
-            $reflectionFunction = new \ReflectionFunction($closure);
             $name = $this->iconfigure->makeWithClosure($closure);
             return $name;
-        } elseif ("defalut" == $name) {
+        } elseif ("default" == $name) {
             return md5($request->getRequestUri().json_encode($request->all()));
+        } elseif ("@" == $first) {
+            $cacheNameClass = \Config::get('integration.cacheNameClass');
+            if (class_exists($cacheNameClass)) {
+                $staticMethod = substr($name, 1);
+                $staticMethod = rtrim($staticMethod, ';');
+                $result =  $cacheNameClass::$staticMethod();
+                if ($result instanceof Closure) {
+                    return $this->iconfigure->makeWithClosure($result);
+                } elseif (is_string($result)) {
+                    return $result;
+                }
+            }
+
+            throw new \RuntimeException("@cache error");
         }
 
         return $name;
