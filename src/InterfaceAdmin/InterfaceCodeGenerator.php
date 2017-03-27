@@ -81,7 +81,7 @@ class InterfaceCodeGenerator
     /**
      * @param boolean $isDeleteParam
      */
-    public function setIsDeleteParam($isDeleteParam)
+    public function setIsDeleteParam(bool $isDeleteParam)
     {
         $this->isDeleteParam = $isDeleteParam;
     }
@@ -221,7 +221,7 @@ class InterfaceCodeGenerator
         $controller = \App::make($controller);
         $classFullName = get_class($controller);
         $controllerConfigure = $this->getControllers($classFullName);
-        $path = $controllerConfigure['className'] . '.php';
+        $path = $controllerConfigure['file'] ;
         $contents = $this->disk->get($path);
         if (!method_exists($controller, $this->actionName)) {
             # 如果控制器里不存在该方法
@@ -243,7 +243,7 @@ class InterfaceCodeGenerator
             $replace = $this->getAnnotateCode();
             $replace = ltrim($replace);
             $replace = rtrim($replace);
-            $contents = urldecode(str_replace(urlencode($docComment), urlencode($replace), urlencode($contents)));
+            $contents = urldecode(str_replace(urlencode($docComment), urlencode($this->getAnnotateCode()), urlencode($contents)));
             # 如果控制器存在该方法
         }
         $this->initConfigure();
@@ -385,7 +385,8 @@ class InterfaceCodeGenerator
                 $controller = $this->getClassNameAndNameSpaceByFileName($filePath);
                 $controllers[key($controller)] = [
                     'className' => current($controller),
-                    'path' => $filePath
+                    'path' => $filePath,
+                    'file' => $file,
                 ];
             }
         }
