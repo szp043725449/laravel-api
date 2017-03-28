@@ -88,13 +88,14 @@ class Integration
             }
         }
 
-
-        /**
-         * 参数验证
-         */
-        $message = $this->iconfigure->validate($request->all());
-        if (!$message->isSuccess()) {
-            return $this->iconfigure->send();
+        if ($this->iconfigure->getName()) {
+            /**
+             * 参数验证
+             */
+            $message = $this->iconfigure->validate($request->all());
+            if (!$message->isSuccess()) {
+                return $this->iconfigure->send();
+            }
         }
 
         //dd($configureClass->getDisposed());

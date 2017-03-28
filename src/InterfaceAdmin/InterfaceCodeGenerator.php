@@ -243,7 +243,7 @@ class InterfaceCodeGenerator
             $replace = $this->getAnnotateCode();
             $replace = ltrim($replace);
             $replace = rtrim($replace);
-            $contents = urldecode(str_replace(urlencode($docComment), urlencode($this->getAnnotateCode()), urlencode($contents)));
+            $contents = urldecode(str_replace(urlencode($docComment), urlencode($replace), urlencode($contents)));
             # 如果控制器存在该方法
         }
         $this->initConfigure();
