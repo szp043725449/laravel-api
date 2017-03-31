@@ -92,10 +92,16 @@ class Annotate
      */
     private $controller;
 
+    /**
+     * @var array
+     */
+    private $annotates = [];
+
     private $prefix;
 
     public function __construct($controller)
     {
+        $this->reg = \Config::get('interface_config.reg', $this->reg);
         $this->controller = $controller;
         $this->setPrefix();
     }
@@ -300,7 +306,6 @@ class Annotate
                     $this,
                     $method
                 ]);
-
                 foreach ($result as $_k => $_v) {
                     $annotate[] = sprintf($annotateFormat, call_user_func_array('sprintf', array_merge([$reg['format']], $_v)));
                 }
@@ -339,6 +344,17 @@ class Annotate
             $this->prefix = $classAnnotations->prefix;
         } catch (\ReflectionException $e) {
             throw $e;
+        }
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (strstr($name, 'set')) {
+            $property = lcfirst(str_replace("set", "", $name));
+            $this->annotates[$property] = current($arguments);
+        } elseif(strstr($name, 'get')) {
+            $property = lcfirst(str_replace("get", "", $name));
+            return isset($this->annotates[$property]) ? $this->annotates[$property] : null ;
         }
     }
 }

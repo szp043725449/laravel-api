@@ -231,15 +231,6 @@ class InterfaceCodeGenerator
         } else {
             $reflection = new \ReflectionClass($controller);
             $docComment = $reflection->getMethod($this->actionName)->getDocComment();
-            /*
-            $docCommentArray = explode(PHP_EOL, $docComment);
-            $docCommentArray = array_map(function ($value) {
-                return trim($value, ' ');
-            }, $docCommentArray);
-            array_shift($docCommentArray);
-            array_pop($docCommentArray);
-            $docComment = $this->getAnnotateCode($docCommentArray);
-            */
             $replace = $this->getAnnotateCode();
             $replace = ltrim($replace);
             $replace = rtrim($replace);
@@ -353,10 +344,59 @@ class InterfaceCodeGenerator
                     } elseif ($key == "middleware") {
                         $static->setMiddleware($data[2]);
                     }
-
-
                 }
             }
+
+
+            if (preg_match_all('/\@(\w*)\s*(.*)\n/', $docComment, $_data)) {
+                foreach ($_data[0] as $key=> $d) {
+                    $flag = false;
+                    foreach ($pregs as $k => $preg) {
+                        if (preg_match($preg, $d)) {
+                            $flag = true;
+                        }
+                    }
+                    if (!$flag) {
+                        $v = explode(" ", trim($d));
+                        $v = array_filter($v);
+                        $v = array_slice($v, 1);
+                        $property = $_data[1][$key];
+                        $interfaceConfig = \Config::get('interface_config.reg.'.$property.'.args');
+                        if (is_string($interfaceConfig)) {
+                            $method = "get".ucfirst($property);
+
+                            $v = [$v];
+                            if ($return = call_user_func_array([
+                                $annotate,
+                                $method
+                            ], [])) {
+                                $v = array_merge($return, $v);
+                                //dump($v);
+                            }
+
+                            $v = [$v];
+                        }
+                       // dump($v);
+                        $method = "set".ucfirst($property);
+                        call_user_func_array([
+                            $annotate,
+                            $method
+                        ], $v);
+                    }
+                }
+
+            }
+            /*
+            foreach ($pregs as $_k => $_preg) {
+                if (preg_match_all($_preg, $docComment, $_data)) {
+                    if (preg_match($_preg, $docComment, $__data)) {
+                        $flag = true;
+                    }
+                }
+            }*/
+
+
+
 
             return $static;
         } catch (\ReflectionException $e) {
