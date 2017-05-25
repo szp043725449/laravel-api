@@ -55,7 +55,6 @@ class Integration
             }
 
         }
-
         $this->iconfigure->setName($configure);
         /**
          * 权限验证
@@ -92,7 +91,11 @@ class Integration
             /**
              * 参数验证
              */
-            $message = $this->iconfigure->validate($request->all());
+            $requestData = [];
+            if ($requestMethod = config("integration.request_data")) {
+                $requestData = $requestMethod();
+            }
+            $message = $this->iconfigure->validate($requestData);
             if (!$message->isSuccess()) {
                 return $this->iconfigure->send();
             }
