@@ -75,7 +75,7 @@ class IntegrationServiceProvider extends ServiceProvider
      */
     private function registerMiddleware()
     {
-        $this->app->make('router')->middleware('integration', Integration::class);
+        $this->app->make('router')->aliasMiddleware('integration', Integration::class);
     }
 
     /**
