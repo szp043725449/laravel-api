@@ -3,6 +3,7 @@
 namespace Integration\Api\Configure;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Integration\Api\Exceptions\NotFoundConfigurePathException;
 use Integration\Api\Exceptions\ValidateFunctionReturnParameterException;
@@ -160,6 +161,8 @@ class Configure
         if ($paramterBag) {
             return $paramterBag;
         }
+        $requestData = config('integration.request_data');
+        $requestData = $requestData();
         $paramterBag = new ParameterBag();
         $disposed = $this->getFirstDisposed();
         foreach ($disposed->getValidateData() as $key=>$paramter) {
@@ -171,7 +174,7 @@ class Configure
                             $result = $this->makeWithClosure($function);
                             $paramterBag->set($paramter['attached_value']['realParamterName'] ? $paramter['attached_value']['realParamterName'] : $key, $result);
                         } else {
-                            $paramterBag->set($paramter['attached_value']['realParamterName'] ? $paramter['attached_value']['realParamterName'] : $key, \App::make('request')->get($key));
+                            $paramterBag->set($paramter['attached_value']['realParamterName'] ? $paramter['attached_value']['realParamterName'] : $key, Arr::get($requestData, $key));
                         }
                     }
                 }
@@ -350,7 +353,7 @@ class Configure
 
         $disposedFilepath = $this->getDisposedFilepath($name);
         if (!file_exists($disposedFilepath)) {
-            throw new NotFoundConfigurePathException($name."is not found");
+            throw new NotFoundConfigurePathException($name." is not found");
         }
 
         $data[$name] = include_once $disposedFilepath;
